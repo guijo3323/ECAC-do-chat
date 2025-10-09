@@ -35,7 +35,10 @@ def relieff(X, y, n_neighbors=10, n_samples=None, random_state=42):
     n, d = X.shape
     if n_samples is None or n_samples > n:
         n_samples = n
-    nn = NearestNeighbors(n_neighbors=n_neighbors+1).fit(X)
+    if n <= 1:
+        return np.zeros(d, float)
+    n_neighbors = max(1, min(n_neighbors, n - 1))
+    nn = NearestNeighbors(n_neighbors=n_neighbors + 1).fit(X)
     scores = np.zeros(d, float)
     idxs = rng.choice(n, size=n_samples, replace=False)
     classes = np.unique(y)
