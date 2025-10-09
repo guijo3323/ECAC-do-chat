@@ -60,4 +60,9 @@ def windowed_features(arr, cols_xyz, fs=50.0, window=256, hop=128):
         ylab = vals[np.argmax(counts)]
         X.append(feat_vec)
         Y.append(ylab)
-    return np.array(X, dtype=float), np.array(Y, dtype=int)
+    X_arr = np.asarray(X, dtype=float)
+    if X_arr.size == 0:
+        feat_len = 4 * (9 + 4)
+        X_arr = np.empty((0, feat_len), dtype=float)
+    Y_arr = np.asarray(Y, dtype=int)
+    return X_arr, Y_arr

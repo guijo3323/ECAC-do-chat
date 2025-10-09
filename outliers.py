@@ -21,7 +21,10 @@ def density_outliers(mask):
     return (n_out / n_tot) * 100.0 if n_tot > 0 else 0.0
 
 def kmeans_outlier_labels(X, n_clusters=5):
-    km = KMeans(n_clusters=n_clusters, n_init="auto", random_state=42)
+    X = np.asarray(X, dtype=float)
+    if X.shape[0] < n_clusters:
+        raise ValueError("Número de amostras inferior ao número de clusters")
+    km = KMeans(n_clusters=n_clusters, n_init=10, random_state=42)
     labels = km.fit_predict(X)
     centers = km.cluster_centers_[labels]
     d = np.linalg.norm(X - centers, axis=1)
